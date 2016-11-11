@@ -30,12 +30,42 @@ int main (int argc, char** argv) {
     cout << "Connected" << endl;
   }
 
+
+  string s = "JOIN_CHATROOM: buffy\n"
+  "CLIENT_IP: [IP Address of client if UDP | 0 if TCP]\n"
+  "PORT: [port number of client if UDP | 0 if TCP]\n"
+  "CLIENT_NAME: tyler303\n";
+  cout << "sending:     " << s << endl;
+  send(sckt, s.c_str(), strlen(s.c_str()), 0);
+  sleep(2);
+
   pool.enqueue([sckt] () {
     for (;;) {
-      char s[1000];
-      bzero(s, 1000);
-      cin.getline(s, 1000);
-      send(sckt, s, strlen(s), 0);
+      // char s[1000];
+      // bzero(s, 1000);
+      // cin.getline(s, 1000);
+
+      // s = "LEAVE_CHATROOM: 0\n"
+      //   "JOIN_ID: 4\n"
+      //   "CLIENT_NAME: tyler303\n";
+      // cout << "sending:     " << s << endl;
+      // send(sckt, s.c_str(), strlen(s.c_str()), 0);
+      // sleep(2);
+      //
+      // s = "DISCONNECT: 0\n"
+      //   "PORT: 4\n"
+      //   "CLIENT_NAME: tyler303\n";
+      // cout << "sending:     " << s << endl;
+      // send(sckt, s.c_str(), strlen(s.c_str()), 0);
+      // sleep(2);
+
+      string s = "CHAT: 0\n"
+        "JOIN_ID: 4\n"
+        "CLIENT_NAME: tyler303\n"
+        "MESSAGE: whats ur fave episode?\n\n";
+      send(sckt, s.c_str(), strlen(s.c_str()), 0);
+
+      sleep(4);
     }
   });
 
@@ -44,7 +74,7 @@ int main (int argc, char** argv) {
       char s[1000];
       bzero(s, 1000);
       read(sckt, s, 1000);
-      cout << s << endl;
+      cout << s << "\n";
     }
   });
 }
